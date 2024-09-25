@@ -1,0 +1,47 @@
+FUNCTION_BLOCK fluid_resuscitation
+
+VAR_INPUT
+    tbsa : REAL; // Total Body Surface Area burned
+    urine_output : REAL; // Hourly Urine Output
+END_VAR
+
+VAR_OUTPUT
+    fluid_rate : REAL; // Fluid Resuscitation Rate
+END_VAR
+
+FUZZIFY tbsa
+    TERM low := (0, 1) (25, 0);
+    TERM medium := (20, 0) (25, 1) (30, 0);
+    TERM high := (30, 0) (55, 1) (60, 0);
+    TERM very_high := (55, 0) (100, 1);
+END_FUZZIFY
+
+FUZZIFY urine_output
+    TERM low := (0, 1) (35, 0);
+    TERM normal := (30, 0) (45, 1) (60, 0);
+    TERM high := (50, 0) (100, 1);
+END_FUZZIFY
+
+DEFUZZIFY fluid_rate
+    TERM low := (0, 1) (80, 0);
+    TERM maintain := (55, 0) (80, 1) (115, 0);
+    TERM moderate := (95, 0) (130, 1) (170, 0);
+    TERM high := (130, 0) (260, 1) (340, 0);
+    TERM very_high := (260, 0) (500, 1);
+    METHOD : COG;
+    DEFAULT := 0;
+END_DEFUZZIFY
+
+RULEBLOCK No1
+    RULE 1 : IF tbsa IS low AND urine_output IS low THEN fluid_rate IS maintain;
+    RULE 2 : IF tbsa IS low AND (urine_output IS normal OR urine_output IS high) THEN fluid_rate IS low;
+    RULE 3 : IF tbsa IS medium AND urine_output IS low THEN fluid_rate IS moderate;
+    RULE 4 : IF tbsa IS medium AND urine_output IS normal THEN fluid_rate IS maintain;
+    RULE 5 : IF tbsa IS medium AND urine_output IS high THEN fluid_rate IS low;
+    RULE 6 : IF tbsa IS high AND (urine_output IS low OR urine_output IS normal) THEN fluid_rate IS high;
+    RULE 7 : IF tbsa IS high AND urine_output IS high THEN fluid_rate IS moderate;
+    RULE 8 : IF tbsa IS very_high AND (urine_output IS low OR urine_output IS normal) THEN fluid_rate IS very_high;
+    RULE 9 : IF tbsa IS very_high AND urine_output IS high THEN fluid_rate IS high;
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
