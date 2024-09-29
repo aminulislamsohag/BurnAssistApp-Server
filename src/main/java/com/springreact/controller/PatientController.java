@@ -20,7 +20,7 @@ import com.springreact.service.PatientService;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin("http://localhost:3000")
+//@CrossOrigin("http://localhost:3000")
 public class PatientController {
 
 	 @Autowired

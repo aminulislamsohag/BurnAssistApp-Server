@@ -15,7 +15,7 @@ import com.springreact.service.PatientBurnService;
 
 @RestController
 @RequestMapping("/api/patientBurn")
-@CrossOrigin("http://localhost:3000")
+//@CrossOrigin("http://localhost:3000")
 public class PatientBurnController {
 	@Autowired
     private PatientBurnService patientBurnService;

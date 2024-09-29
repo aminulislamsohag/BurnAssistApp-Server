@@ -20,7 +20,7 @@ import com.springreact.service.FuzzyLogicService;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin("http://localhost:3000")
+//@CrossOrigin("http://localhost:3000")
 public class FuzzyLogicController {
 	@Autowired
     private FuzzyLogicService fuzzyLogicService;
