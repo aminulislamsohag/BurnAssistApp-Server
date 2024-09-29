@@ -1,7 +1,13 @@
 package com.springreact.service;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+
 import net.sourceforge.jFuzzyLogic.FIS;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 
 @Service
 public class FuzzyLogicService {
@@ -9,13 +15,19 @@ public class FuzzyLogicService {
 	private FIS fis;
 
     public FuzzyLogicService() {
-        // Load FCL file
-        String fileName = "src/main/resources/fluid_resuscitation.fcl";
-        fis = FIS.load(fileName, true);
+        try {
+            // Load FCL file from classpath
+            ClassPathResource resource = new ClassPathResource("fluid_resuscitation.fcl");
+            InputStream inputStream = resource.getInputStream();
+            fis = FIS.load(inputStream, true);
 
-        if (fis == null) {
-            System.err.println("Cannot load file: " + fileName);
-            return;
+            if (fis == null) {
+                System.err.println("Cannot load FCL file: " + resource.getPath());
+                return;
+            }
+        } catch (IOException e) {
+            System.err.println("Error loading FCL file: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
