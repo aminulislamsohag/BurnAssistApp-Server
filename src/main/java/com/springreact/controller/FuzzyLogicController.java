@@ -15,25 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springreact.model.PatientData;
 import com.springreact.repository.PatientDataRepository;
-import com.springreact.service.FuzzyLogicService;
+
 
 
 @RestController
 @RequestMapping("/api")
 //@CrossOrigin("http://localhost:3000")
 public class FuzzyLogicController {
-	@Autowired
-    private FuzzyLogicService fuzzyLogicService;
+	//@Autowired
+   // private FuzzyLogicService fuzzyLogicService;
 
     @Autowired
     private PatientDataRepository patientDataRepository;
 
-    @GetMapping("/predict")
-    public double predict(
-            @RequestParam double tbsa,
-            @RequestParam double urineOutput) {
-        return fuzzyLogicService.evaluate(tbsa, urineOutput);
-    }
+
 
     @PostMapping("/savePatientData")
     public void savePatientData( @RequestBody PatientData patientData) {
